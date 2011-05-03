@@ -15,10 +15,18 @@
 #
 def triangle(a, b, c)
   # WRITE THIS CODE
+  total = a+b+c
+  half = total/2;
+  barf if (a <= 0 || b <= 0 || c <= 0)
+  barf if (a+b <= half || b+c <= half || a+c <= half)
   result = :scalene
   result = :isosceles if (a == b ||b == c || a == c)
   result = :equilateral if (a == b && a == c)
   result
+end
+
+def barf
+  raise TriangleError
 end
 
 # Error class used in part 2.  No need to change this code.
