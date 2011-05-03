@@ -36,16 +36,15 @@ def score(dice)
     occurrences = dice.select{|i|
       dice_num == i
     }
-    if (occurrences.size >= 3)
+    count = occurrences.size
+    i = 1
+    if (count >= 3)
       score += triplet_points
-      (4..occurrences.size).each{
-        score += points
-      }
-    else
-      (1..occurrences.size).each{
-        score += points
-      }
+      i = 4
     end
+    (i..count).each{
+      score += points
+    }
   }
 
   score
