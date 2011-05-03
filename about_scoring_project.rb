@@ -30,7 +30,34 @@ require File.expand_path(File.dirname(__FILE__) + '/edgecase')
 # Your goal is to write the score method.
 
 def score(dice)
-  # You need to write this method
+  score = 0
+
+  score_each {|dice_num, points, triplet_points|
+    occurrences = dice.select{|i|
+      dice_num == i
+    }
+    if (occurrences.size >= 3)
+      score += triplet_points
+      (4..occurrences.size).each{
+        score += points
+      }
+    else
+      (1..occurrences.size).each{
+        score += points
+      }
+    end
+  }
+
+  score
+end
+
+def score_each
+  yield(1, 100, 1000)
+  yield(2, 0, 2*100)
+  yield(3, 0, 3*100)
+  yield(4, 0, 4*100)
+  yield(5, 50, 5*100)
+  yield(6, 0, 6*100)
 end
 
 class AboutScoringProject < EdgeCase::Koan
@@ -68,6 +95,7 @@ class AboutScoringProject < EdgeCase::Koan
 
   def test_score_of_mixed_is_sum
     assert_equal 250, score([2,5,2,2,3])
+    assert_equal 1100, score([1,1,1,1])
     assert_equal 550, score([5,5,5,5])
   end
 
