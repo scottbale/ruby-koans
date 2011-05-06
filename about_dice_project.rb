@@ -9,16 +9,11 @@ require File.expand_path(File.dirname(__FILE__) + '/edgecase')
 class AboutDiceProject < EdgeCase::Koan
 
   class DiceSet
-    def roll(a_roll)
-      @dice_count = a_roll
-      if @values.nil?
-        @values = (1..5).to_a
-      end
-      @values = @values.collect { |item| rand(item) }
-    end
+    attr_reader :values
 
-    def values
-      @values[0,@dice_count]
+    def roll(a_roll)
+      @values = (1..a_roll).to_a
+      @values = @values.map { |item| rand(item) }
     end
 
     def to_s()
@@ -27,10 +22,10 @@ class AboutDiceProject < EdgeCase::Koan
 
     def rand(seed)
       if (@random.nil?)
-        @random = 1
+        @random = 10
       end
-      @random = (@random*seed)%5+1
-      @random
+      @random = (@random*10+seed)%32
+      @random%5+1
     end
   end
 
@@ -85,6 +80,9 @@ class AboutDiceProject < EdgeCase::Koan
 
     dice.roll(1)
     assert_equal 1, dice.values.size
+
+    dice.roll(12)
+    assert_equal 12, dice.values.size
   end
 
 end
