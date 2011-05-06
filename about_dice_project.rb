@@ -7,6 +7,33 @@ require File.expand_path(File.dirname(__FILE__) + '/edgecase')
 # end
 
 class AboutDiceProject < EdgeCase::Koan
+
+  class DiceSet
+    def roll(a_roll)
+      @dice_count = a_roll
+      if @values.nil?
+        @values = (1..5).to_a
+      end
+      @values = @values.collect { |item| rand(item) }
+    end
+
+    def values
+      @values[0,@dice_count]
+    end
+
+    def to_s()
+      @values
+    end
+
+    def rand(seed)
+      if (@random.nil?)
+        @random = 1
+      end
+      @random = (@random*seed)%5+1
+      @random
+    end
+  end
+
   def test_can_create_a_dice_set
     dice = DiceSet.new
     assert_not_nil dice
